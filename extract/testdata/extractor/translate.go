@@ -19,7 +19,7 @@ var (
 	tr *lingua.Container
 )
 
-func UseMessagesTranslate(ctx context.Context) {
+func UseMessagesTranslate() {
 	message := tr.Message(context.Background(), "login.welcome", map[string]any{"user": "john"})
 	fmt.Println(message)
 
