@@ -1,0 +1,6 @@
+welcome.login: "Welcome :user|capitalize"
+convert.case: "Total: :total"
+multiple: "I have :total :fruit and will attempt to get :more more :fruit."
+required: ":attribute|replace|capitalize is required"
+first_name: "first name"
+plural.test: "There are :count|plural(other {# results} =0 {no results} =1-5 {a few results})"
