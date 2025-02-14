@@ -45,6 +45,11 @@ items: ":count|plural(=0 {no items} =1 {1 item} =2-10 {a few items} other {# ite
 Users can use the lingua tool to extract translation keys from your go source files. This will collect every value of type github.com/SLASH2NL/lingua.Key from
 the src directory.
 
+Install the tool by running:
+```bash
+$ go install github.com/SLASH2NL/lingua/cmd/lingua@latest
+```
+
 ```bash
 # Extract translation keys from go source files and write them to translation files in dst.
 # If there are existing files they will be merged and only new keys will be added.
@@ -53,6 +58,11 @@ the src directory.
 # If you want to add a new language add en empty yaml file like `$ touch en.yaml`.
 lingua extract path_to_go_source_files path_to_translation_files
 ```
+
+What does it extact?
+- const values `const translation lingua.Key = "const.translation"`
+- var values `var translation lingua.Key = "var.translation"`
+- function calls that provide a lingua.Key as argument `myFunc("func.call") where myFunc is defined as func(msg lingua.Key)`
 
 ## Usage
 Lingua parses translation files from a filesystem(anything that implements afero.Fs). Files should follow the following naming convention to be recognized by lingua:
