@@ -9,6 +9,36 @@ Translations are simple key value pairs. The key is used to identify the transla
 welcome.message: "Welcome :user!"
 ```
 
+## Usage
+Lingua parses translation files from a filesystem(anything that implements afero.Fs). Files should follow the following naming convention to be recognized by lingua:
+- en.yaml (language only)
+- or en-US.yaml (language and region)
+
+Empty files are allowed and will also be parsed. This can be useful for adding a new language and prefill it with the keys found by `lingua extract`.
+
+```go
+// Parse translations from fs (this can be any filesystem that implements the afero.FS interface).
+// This can be an embed.FS or a local filesystem.
+// Adding a default language to use as fallback.
+c, err := lingua.ContainerFromFs(afero.NewBasePathFs(afero.NewOsFs(), "./translations"), lingua.WithDefaultLanguage(lingua.MustParseLanguage("en")))
+if err != nil {
+    // Handle error...
+}
+
+// On each request set the preferred language in the context.
+// Parse the language from a user request. This can be from a header or user settings, for example the http Accept-Language header.
+ctx := context.Background()
+ctx, err := lingua.WithLanguage(ctx, r.Header.Get("Accept-Language"))
+if err != nil {
+    // Handle error...
+}
+
+// Translate the message.
+// If the user requested "en-US" but you only have "en" translations available, the translator will use the "en" translations.
+msg := c.Message(ctx, "welcome.message", map[string]any{"user": "wvell"})
+fmt.Println(msg) // prints: Welcome wvell!
+```
+
 ## Transformers
 Transformers can be used to modify the replacement value before it is inserted into the translation message.
 There are 3 built-in transformers:
@@ -63,33 +93,3 @@ What does it extact?
 - const values `const translation lingua.Key = "const.translation"`
 - var values `var translation lingua.Key = "var.translation"`
 - function calls that provide a lingua.Key as argument `myFunc("func.call") where myFunc is defined as func(msg lingua.Key)`
-
-## Usage
-Lingua parses translation files from a filesystem(anything that implements afero.Fs). Files should follow the following naming convention to be recognized by lingua:
-- en.yaml (language only)
-- or en-US.yaml (language and region)
-
-Empty files are allowed and will also be parsed. This can be useful for adding a new language and prefill it with the keys found by `lingua extract`.
-
-```go
-// Parse translations from fs (this can be any filesystem that implements the afero.FS interface).
-// This can be an embed.FS or a local filesystem.
-// Adding a default language to use as fallback.
-c, err := lingua.ContainerFromFs(afero.NewBasePathFs(afero.NewOsFs(), "./translations"), lingua.WithDefaultLanguage(lingua.MustParseLanguage("en")))
-if err != nil {
-    // Handle error...
-}
-
-// On each request set the preferred language in the context.
-// Parse the language from a user request. This can be from a header or user settings, for example the http Accept-Language header.
-ctx := context.Background()
-ctx, err := lingua.WithLanguage(ctx, r.Header.Get("Accept-Language"))
-if err != nil {
-    // Handle error...
-}
-
-// Translate the message.
-// If the user requested "en-US" but you only have "en" translations available, the translator will use the "en" translations.
-msg := c.Message(ctx, "welcome.message", map[string]any{"user": "wvell"})
-fmt.Println(msg) // prints: Welcome wvell!
-```
