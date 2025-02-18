@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	languageKey = ctxKey("locale")
+	languageKey = ctxKey("lingua")
 	langRe      = regexp.MustCompile(`(?i)([a-z]{2,8})([-_][a-z]{4})?([-_][a-z]{2}|\d{3})?`)
 )
 
