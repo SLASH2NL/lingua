@@ -202,7 +202,7 @@ func (c *Container) Scope(ctx context.Context) *ScopedContainer {
 func (c *Container) ScopedLanguage(ctx context.Context) LanguageID {
 	// Get the language from the context.
 	// Fallback to the defaultLanguage. If no language can be detected return the translation key.
-	lang := fromCtx(ctx)
+	lang := FromCtx(ctx)
 	if lang.Empty() {
 		if c.defaultLanguage.Empty() {
 			return LanguageID{}

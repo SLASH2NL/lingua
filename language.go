@@ -25,8 +25,8 @@ func WithLanguage(ctx context.Context, raw string) context.Context {
 	return toCtx(ctx, lang)
 }
 
-// fromCtx returns the language from the ctx or an empty language if no language is set.
-func fromCtx(ctx context.Context) LanguageID {
+// FromCtx returns the language from the ctx or an empty language if no language is set.
+func FromCtx(ctx context.Context) LanguageID {
 	l, ok := ctx.Value(languageKey).(LanguageID)
 	if ok {
 		return l

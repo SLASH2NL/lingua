@@ -52,11 +52,11 @@ func TestLanguageCtx(t *testing.T) {
 		t.Run(c.input, func(t *testing.T) {
 			ctx := WithLanguage(context.Background(), c.input)
 			if c.expectDefault {
-				require.True(t, fromCtx(ctx).Empty())
+				require.True(t, FromCtx(ctx).Empty())
 				return
 			}
 
-			lang := fromCtx(ctx)
+			lang := FromCtx(ctx)
 			require.Equal(t, c.language, lang.Language)
 			require.Equal(t, c.region, lang.Region)
 		})
@@ -86,12 +86,12 @@ func TestToCtx(t *testing.T) {
 		t.Run(c.input, func(t *testing.T) {
 			ctx := WithLanguage(context.Background(), c.input)
 			if c.expectDefault {
-				require.True(t, fromCtx(ctx).Empty())
+				require.True(t, FromCtx(ctx).Empty())
 				return
 			}
 
-			require.False(t, fromCtx(ctx).Empty())
-			lang := fromCtx(ctx)
+			require.False(t, FromCtx(ctx).Empty())
+			lang := FromCtx(ctx)
 			require.Equal(t, c.language, lang.Language)
 			require.Equal(t, c.region, lang.Region)
 		})
